@@ -5,24 +5,32 @@
   & > div {
     flex-basis: 33.3333%;
     min-height: 100%;
-    padding: 20px;
+    & .ScrollbarsCustom-Content {
+      padding: 20px !important;
+    }
   }
 }
 
 .history {
   color: #fff;
   background-image: linear-gradient(-45deg, #ffc796 0%, #ff6b95 100%);
+  padding: 20px !important;
 }
 
-.votes {
+.users {
   background-color: #fafafa;
+}
+
+.vote-options {
+  padding: 20px !important;
 }
 
 .options {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  & > button {
+  height: auto;
+  & > .vote-button {
     flex-basis: 30%;
     padding: 0;
     border: none;
@@ -55,6 +63,66 @@
       transform: scale(1.05);
       transition: all 0.2s ease-in-out;
       opacity: 1;
+    }
+  }
+}
+
+.story-input {
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 15px;
+  display: flex;
+  height: 48px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132),
+    0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+  align-items: center;
+  border: 1px solid #fff;
+  & input {
+    border: none;
+    flex-grow: 1;
+    height: 48px;
+    line-height: 48px;
+    font-size: 16px;
+    padding: 0 15px;
+  }
+  & button {
+    background-color: #ff6b95;
+    border: none;
+    outline: none;
+    height: 44px;
+    border-radius: 22px;
+    color: #fff;
+    margin-right: 2px;
+    padding: 0 24px;
+  }
+  &:hover,
+  &:focus {
+    border: 1px solid #ff6b95;
+  }
+}
+
+.title {
+  font-size: 24px;
+  color: #3e3e3e;
+  margin-bottom: 24px;
+  display: block;
+  &.light {
+    color: #fff;
+  }
+}
+
+.unique-votes {
+  display: flex;
+  flex-wrap: wrap;
+  & > div {
+    margin: 0 5px;
+    &:first-of-type {
+      margin-left: 0;
+    }
+    &:last-of-type {
+      margin-right: 0;
     }
   }
 }

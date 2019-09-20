@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface IVoteButton {
   num: number;
@@ -11,10 +11,10 @@ export const VoteButton: React.FC<IVoteButton> = ({ num, onClick }) => {
   };
 
   return (
-    <button onClick={handleOnClick}>
+    <div className="vote-button" onClick={handleOnClick}>
       <div>
-        <span>{num === Infinity ? '?' : num}</span>
+        <span>{num === Infinity ? "?" : num}</span>
       </div>
-    </button>
+    </div>
   );
 };

@@ -1,0 +1,35 @@
+.user {
+  background-color: #fff;
+  margin-bottom: 15px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132),
+    0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+  border-radius: 4px;
+  &-info {
+    display: flex;
+    flex-direction: column;
+    & > span {
+      margin-bottom: 5px;
+    }
+    & > span + span {
+      font-size: 12px;
+      color: #888;
+    }
+  }
+  &-vote {
+    background-color: #ff6b95;
+    width: 40px;
+    height: 40px;
+    display: block;
+    text-align: center;
+    border-radius: 4px;
+    & > span {
+      line-height: 40px;
+      color: #fff;
+      font-weight: bold;
+    }
+  }
+}
