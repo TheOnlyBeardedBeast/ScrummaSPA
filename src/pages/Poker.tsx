@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 import {
   HubConnectionBuilder,
   HubConnection,
-  HubConnectionState
-} from "@aspnet/signalr";
-import "./poker.scss";
-import { VoteButton } from "../modules/voteButton/VoteButton";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { User } from "../modules/vote/User";
-import Scrollbar from "react-scrollbars-custom";
-import { VoteIndicator } from "../modules/vote/VoteIndicator";
+  HubConnectionState,
+} from '@aspnet/signalr';
+import './poker.scss';
+import { VoteButton } from '../modules/voteButton/VoteButton';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { User } from '../modules/vote/User';
+import Scrollbar from 'react-scrollbars-custom';
+import { VoteIndicator } from '../modules/vote/VoteIndicator';
 
 interface PokerState {
   self?: IUser;
@@ -34,7 +34,7 @@ const numbers: Array<number> = [
   20,
   40,
   100,
-  Infinity
+  Infinity,
 ];
 
 class PokerPage extends React.Component<PokerProps, PokerState> {
@@ -44,7 +44,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     self: undefined,
     timing: false,
     seconds: 0,
-    timer: undefined
+    timer: undefined,
   };
 
   componentDidMount = async () => {
@@ -52,12 +52,12 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     const { name = undefined } = location.state || {};
 
     if (!name) {
-      history.push("/");
+      history.push('/');
       return;
     }
 
     const connection = new HubConnectionBuilder()
-      .withUrl("http://localhost:5000/pokerhub")
+      .withUrl('http://localhost:5000/pokerhub')
       .build();
 
     try {
@@ -71,53 +71,63 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     }
 
     this.setState({
-      connection
+      connection,
     });
 
-    connection.send("OnJoin", this.props.location.state.name);
+    connection.send('OnJoin', this.props.location.state.name);
 
-    connection.on("clientConnected", () => {
-      console.log("client is connected");
+    connection.on('clientConnected', () => {
+      console.log('client is connected');
     });
 
-    connection.on("clientJoined", (user: IUser) => {
+    connection.on('clientJoined', (user: IUser) => {
       this.setState({ users: [...this.state.users, user] });
     });
 
-    connection.on("selfJoined", (user: IUser) => {
+    connection.on('selfJoined', (user: IUser) => {
       this.setState({ self: user });
     });
 
-    connection.on("clientLeft", (connectionId: string) => {
+    connection.on('clientLeft', (connectionId: string) => {
       this.setState({
         users: this.state.users.filter(
-          user => user.connectionId !== connectionId
-        )
+          user => user.connectionId !== connectionId,
+        ),
       });
     });
 
-    connection.on("clientSyncRequest", (connectionId: string) => {
-      console.log("syncrequest");
-      connection.send("OnSync", connectionId, this.state.self);
+    connection.on('clientSyncRequest', (connectionId: string) => {
+      console.log('syncrequest');
+      connection.send(
+        'OnSync',
+        connectionId,
+        this.state.self,
+        this.state.timer ? this.state.seconds : null,
+      );
     });
 
-    connection.on("clientSyncResponse", (user: IUser) => {
-      console.log("syncresponse", user);
-      this.setState({ users: [...this.state.users, user] });
+    connection.on('clientSyncResponse', (user: IUser, seconds?: number) => {
+      console.log('syncresponse', user);
+      if (!this.state.seconds && !!seconds) {
+        this.startTimer(seconds);
+      }
+      this.setState({
+        users: [...this.state.users, user],
+      });
     });
 
-    connection.on("clientTimerStart", () => {
+    connection.on('clientTimerStart', () => {
       !this.state.timer && this.startTimer(0);
-      console.log("invoked start timer");
+      console.log('invoked start timer');
     });
 
-    connection.on("clientTimerStop", () => {
+    connection.on('clientTimerStop', () => {
       this.state.timer && this.stopTimer();
-      console.log("invoked stop timer");
+      console.log('invoked stop timer');
     });
 
-    connection.on("clientVoted", (connectionId: string, num: number) => {
-      console.log("client voted " + num);
+    connection.on('clientVoted', (connectionId: string, num: number) => {
+      console.log('client voted ' + num);
 
       const users = this.state.users.map(user => {
         if (user.connectionId !== connectionId) {
@@ -128,8 +138,8 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
 
       this.setState({
         users: users.sort((a, b) =>
-          a.connectionId.localeCompare(b.connectionId)
-        )
+          a.connectionId.localeCompare(b.connectionId),
+        ),
       });
     });
   };
@@ -138,7 +148,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     const { connection, users }: PokerState = this.state;
 
     if (connection!.state === HubConnectionState.Connected) {
-      connection!.send("onSync", connectionId, users);
+      connection!.send('onSync', connectionId, users);
     }
   };
 
@@ -146,7 +156,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     const { connection }: PokerState = this.state;
 
     if (connection!.state === HubConnectionState.Connected) {
-      connection!.send("OnJoin", username);
+      connection!.send('OnJoin', username);
     }
   };
 
@@ -156,16 +166,16 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     this.setState({ self: { ...self!, vote: num } });
 
     if (num === Infinity) {
-      return connection!.send("OnVote", 1000);
+      return connection!.send('OnVote', 1000);
     }
 
-    connection!.send("OnVote", num);
+    connection!.send('OnVote', num);
   };
 
   startTimer = (initialSeconds?: number) => {
     this.setState({
       seconds: initialSeconds || 0,
-      timer: window.setInterval(this.timerTick, 1000)
+      timer: window.setInterval(this.timerTick, 1000),
     });
   };
 
@@ -173,7 +183,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     window.clearInterval(this.state.timer);
     this.setState({
       timer: undefined,
-      seconds: 0
+      seconds: 0,
     });
   };
 
@@ -182,18 +192,18 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
 
     if (!this.state.timer) {
       if (connection!.state === HubConnectionState.Connected) {
-        connection!.invoke("OnTimerStart");
+        connection!.invoke('OnTimerStart');
       }
     } else {
       if (connection!.state === HubConnectionState.Connected) {
-        connection!.invoke("OnTimerStop");
+        connection!.invoke('OnTimerStop');
       }
     }
   };
 
   timerTick = () => {
     this.setState({
-      seconds: this.state.seconds + 1
+      seconds: this.state.seconds + 1,
     });
     console.log(this.state.seconds);
   };
@@ -216,7 +226,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
         .map(user => user.vote!) || [];
 
     const uniqueVotes = votes.filter(
-      (vote, index) => (!!vote || vote === 0) && votes.indexOf(vote) === index
+      (vote, index) => (!!vote || vote === 0) && votes.indexOf(vote) === index,
     );
 
     return uniqueVotes
@@ -240,7 +250,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     return users.map(user => <User user={user} showVote={!timer} />);
   };
 
-  fmtMSS = (s: number) => (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
+  fmtMSS = (s: number) => (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s;
 
   renderTime = () => {
     const { seconds }: PokerState = this.state;
@@ -262,7 +272,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
             <div className="story-input">
               <input type="text" />
               <button onClick={this.handleTimerClick}>
-                {this.state.timer ? this.renderTime() : "Start"}
+                {this.state.timer ? this.renderTime() : 'Start'}
               </button>
             </div>
             <span className="title">Voters</span>
@@ -275,7 +285,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
         <div className="vote-options">
           <span className="title">User</span>
           <div className="options">
-            {this.state.timer ? this.renderButtons() : "No running voting"}
+            {this.state.timer ? this.renderButtons() : 'No running voting'}
           </div>
         </div>
       </div>
