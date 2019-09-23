@@ -38,7 +38,7 @@ const numbers: Array<number> = [
 ];
 
 class PokerPage extends React.Component<PokerProps, PokerState> {
-  state = {
+  state: PokerState = {
     connection: undefined,
     users: new Array<IUser>(),
     self: undefined,
@@ -142,6 +142,17 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
         ),
       });
     });
+
+    connection.on('clearVotes', () => {
+      const { self, users }: PokerState = this.state;
+
+      const clensedUsers = users.map(user => ({ ...user, vote: undefined }));
+
+      this.setState({
+        self: { ...self!, vote: undefined },
+        users: clensedUsers,
+      });
+    });
   };
 
   sync = (connectionId: string) => {
@@ -177,6 +188,8 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
       seconds: initialSeconds || 0,
       timer: window.setInterval(this.timerTick, 1000),
     });
+
+    this.clearVotes();
   };
 
   stopTimer = () => {
@@ -205,7 +218,14 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     this.setState({
       seconds: this.state.seconds + 1,
     });
-    console.log(this.state.seconds);
+  };
+
+  clearVotes = () => {
+    const { connection }: PokerState = this.state;
+
+    if (connection && connection!.state === HubConnectionState.Connected) {
+      connection!.invoke('OnClearVotes');
+    }
   };
 
   handleTimerClick = () => {
@@ -235,10 +255,10 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
   };
 
   renderSelf = () => {
-    const { self }: PokerState = this.state;
+    const { self, timer }: PokerState = this.state;
 
     if (self) {
-      return <User user={self} showVote={true} />;
+      return <User user={self} showVote={true} timer={timer} />;
     }
 
     return null;
@@ -247,7 +267,9 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
   renderUsers = () => {
     const { users, timer }: PokerState = this.state;
 
-    return users.map(user => <User user={user} showVote={!timer} />);
+    return users.map(user => (
+      <User user={user} showVote={!timer} timer={timer} />
+    ));
   };
 
   fmtMSS = (s: number) => (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s;
@@ -256,6 +278,23 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     const { seconds }: PokerState = this.state;
 
     return this.fmtMSS(seconds);
+  };
+
+  renderResult = (): JSX.Element | null => {
+    const { users, self, timer } = this.state;
+
+    console.log(users.every(user => !!user.vote) && self && self.vote);
+
+    if (users.every(user => !!user.vote) && self && self.vote && !timer) {
+      return (
+        <>
+          <span className="title">Unique votes</span>
+          <div className="unique-votes">{this.renderUniqueVotes()}</div>
+        </>
+      );
+    }
+
+    return null;
   };
 
   render() {
@@ -278,15 +317,16 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
             <span className="title">Voters</span>
             {this.renderSelf()}
             {this.renderUsers()}
-            <span className="title">Unique votes</span>
-            <div className="unique-votes">{this.renderUniqueVotes()}</div>
+            {this.renderResult()}
           </Scrollbar>
         </div>
         <div className="vote-options">
-          <span className="title">User</span>
-          <div className="options">
-            {this.state.timer ? this.renderButtons() : 'No running voting'}
-          </div>
+          <Scrollbar removeTracksWhenNotUsed>
+            <span className="title">User</span>
+            <div className="options">
+              {this.state.timer ? this.renderButtons() : 'No running voting'}
+            </div>
+          </Scrollbar>
         </div>
       </div>
     );

@@ -1,13 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import "./user.scss";
+import './user.scss';
 
 interface VoteProps {
   user: IUser;
   showVote: boolean;
+  timer?: number;
 }
 
-export const User: React.FC<VoteProps> = ({ user, showVote }) => {
+export const User: React.FC<VoteProps> = ({ user, showVote, timer }) => {
   const { userName, vote } = user;
 
   return (
@@ -16,6 +17,11 @@ export const User: React.FC<VoteProps> = ({ user, showVote }) => {
         <span>{userName}</span>
         <span>email@email.sk</span>
       </div>
+      {timer && (
+        <div>
+          <span>{!!vote || vote === 0 ? 'Voted' : 'Waiting'}</span>
+        </div>
+      )}
       <div className="user-vote">
         <span>{showVote && vote}</span>
       </div>
