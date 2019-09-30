@@ -9,7 +9,7 @@ import { VoteButton } from '../modules/voteButton/VoteButton';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { User } from '../modules/vote/User';
 import Scrollbar from 'react-scrollbars-custom';
-import { VoteIndicator } from '../modules/vote/VoteIndicator';
+import { Result } from '../modules/result/Result';
 
 interface PokerState {
   self?: IUser;
@@ -89,6 +89,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     });
 
     connection.on('clientLeft', (connectionId: string) => {
+      console.log('a cleint left');
       this.setState({
         users: this.state.users.filter(
           user => user.connectionId !== connectionId,
@@ -237,23 +238,6 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
       <VoteButton key={index} num={num} onClick={this.vote} />
     ));
 
-  renderUniqueVotes = () => {
-    const { users, self }: PokerState = this.state;
-
-    const votes: Array<number> =
-      (self ? [...users, self] : users)
-        .filter(user => !!user.vote || user.vote === 0)
-        .map(user => user.vote!) || [];
-
-    const uniqueVotes = votes.filter(
-      (vote, index) => (!!vote || vote === 0) && votes.indexOf(vote) === index,
-    );
-
-    return uniqueVotes
-      .sort((a, b) => a - b)
-      .map(vote => <VoteIndicator vote={vote} showVote={true} />);
-  };
-
   renderSelf = () => {
     const { self, timer }: PokerState = this.state;
 
@@ -267,8 +251,8 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
   renderUsers = () => {
     const { users, timer }: PokerState = this.state;
 
-    return users.map(user => (
-      <User user={user} showVote={!timer} timer={timer} />
+    return users.map((user, index) => (
+      <User key={index} user={user} showVote={!timer} timer={timer} />
     ));
   };
 
@@ -283,13 +267,15 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
   renderResult = (): JSX.Element | null => {
     const { users, self, timer } = this.state;
 
-    console.log(users.every(user => !!user.vote) && self && self.vote);
-
-    if (users.every(user => !!user.vote) && self && self.vote && !timer) {
+    if (
+      !timer &&
+      (users.some(user => !!user.vote || user.vote === 0) ||
+        (self && (!!self.vote || self.vote === 0)))
+    ) {
       return (
         <>
-          <span className="title">Unique votes</span>
-          <div className="unique-votes">{this.renderUniqueVotes()}</div>
+          <span className="title">Result</span>
+          <Result users={users} self={self} />
         </>
       );
     }

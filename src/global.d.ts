@@ -4,3 +4,9 @@ interface IUser {
   userName?: string;
   role: number;
 }
+
+interface IVoteResult {
+  [index: string]: number;
+}
+
+declare module 'gradstop';
