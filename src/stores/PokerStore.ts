@@ -1,83 +1,12 @@
-import { observable, computed, action } from 'mobx';
+import { action } from 'mobx';
+import debounce from "lodash.debounce";
 import {
-  HubConnection,
   HubConnectionBuilder,
-  HubConnectionState,
 } from '@aspnet/signalr';
+import { PokerStoreComputed } from './PokerStoreComputed';
 
-export class PokerStore {
-  @observable
-  private _connection?: HubConnection = undefined;
-  @computed
-  public get connection(): HubConnection | undefined {
-    return this._connection;
-  }
-  public set connection(v: HubConnection | undefined) {
-    this._connection = v;
-  }
-
-  @computed
-  public get isConnected(): boolean {
-    return (
-      !!this.connection &&
-      this.connection.state === HubConnectionState.Connected
-    );
-  }
-
-  @observable
-  private _users: Array<IUser> = [];
-  @computed
-  public get users(): Array<IUser> {
-    return this._users;
-  }
-  public set users(v: Array<IUser>) {
-    this._users = v;
-  }
-
-  @computed
-  public get uniqueVotes(): Array<number> {
-    return (this.self ? [...this.users, this.self] : this.users)
-      .map(user => user.vote!)
-      .filter(
-        (vote, index, votes) =>
-          (!!vote || vote === 0) && votes.indexOf(vote) === index,
-      );
-  }
-
-  @observable
-  private _self?: IUser = undefined;
-  @computed
-  public get self(): IUser | undefined {
-    return this._self;
-  }
-  public set self(v: IUser | undefined) {
-    this._self = v;
-  }
-
-  //   seconds: 0,
-  @observable
-  private _seconds: number = 0;
-  @computed
-  public get seconds(): number {
-    return this._seconds;
-  }
-  public set seconds(v: number) {
-    this._seconds = v;
-  }
-
-  //     timer: undefined,
-  @observable
-  private _timer?: number = undefined;
-  @computed
-  public get timer(): number | undefined {
-    return this._timer;
-  }
-  public set timer(v: number | undefined) {
-    this._timer = v;
-  }
-
-  @action
-  public initializeConnection = async (
+export class PokerStore extends PokerStoreComputed {
+  @action public initializeConnection = async (
     name: string,
     role: number,
     group: number,
@@ -166,6 +95,8 @@ export class PokerStore {
     });
 
     this.connection.on('clearVotes', () => {
+      console.log("invoked clear votes");
+
       const clensedUsers = this.users.map(user => ({
         ...user,
         vote: undefined,
@@ -173,35 +104,34 @@ export class PokerStore {
       this.self = { ...this.self!, vote: undefined };
       this.users = clensedUsers;
     });
+
+    this.connection.on("syncTitle",(title:string) => this.title = title);
   };
 
-  @action
-  timerTick = () => (this.seconds = this.seconds + 1);
+  @action timerTick = () => (this.seconds = this.seconds + 1);
 
-  @action
-  public startTimer = (initialSeconds?: number) => {
-    this.seconds = initialSeconds || 0;
+  @action public startTimer = (initialSeconds: number = 0) => {
+    this.seconds = initialSeconds;
     this.timer = window.setInterval(this.timerTick, 1000);
 
-    this.clearVotes();
+    if(!initialSeconds){
+      this.clearVotes();
+    }
   };
 
-  @action
-  stopTimer = () => {
+  @action stopTimer = () => {
     window.clearInterval(this.timer);
     this.timer = undefined;
     this.seconds = 0;
   };
 
-  @action
-  clearVotes = () => {
+  @action clearVotes = () => {
     if (this.isConnected) {
       this.connection!.invoke('OnClearVotes');
     }
   };
 
-  @action
-  toggleTimer = () => {
+  @action toggleTimer = () => {
     if (!this.timer) {
       if (this.isConnected) {
         this.connection!.invoke('OnTimerStart');
@@ -213,28 +143,39 @@ export class PokerStore {
     }
   };
 
-  @action
-  public sync = (connectionId: string) => {
+  @action public sync = (connectionId: string) => {
     if (this.isConnected) {
       this.connection!.send('onSync', connectionId, this.users);
     }
   };
 
-  @action
-  join = (username: string) => {
+  @action join = (username: string) => {
     if (this.isConnected) {
       this.connection!.send('OnJoin', username);
     }
   };
 
-  @action
-  vote = (num: number) => {
+  @action vote = (num: number) => {
     this.self = { ...this.self!, vote: num };
 
-    if (num === Infinity) {
+    if (num === Infinity && this.isConnected) {
       return this.connection!.send('OnVote', 1000);
     }
 
-    this.connection!.send('OnVote', num);
+    if(this.isConnected){
+      this.connection!.send('OnVote', num);
+    }
   };
+
+  protected syncTitle = debounce(()=>{
+    if(this.isConnected){
+      this.connection!.send('OnSyncTitle', this.title);
+    }
+  },250);
+
+  @action setTitle = (title: string) => {
+    this.title = title;
+
+    this.syncTitle();
+  }
 }

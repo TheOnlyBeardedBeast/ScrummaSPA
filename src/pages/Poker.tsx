@@ -73,6 +73,12 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
     );
   };
 
+  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+   const { pokerStore } = this.props;
+
+   pokerStore!.setTitle(event.target.value);
+  }
+
   render() {
     return (
       <div className="scrumma-group">
@@ -85,7 +91,7 @@ class PokerPage extends React.Component<PokerProps, PokerState> {
           <Scrollbar removeTracksWhenNotUsed>
             <span className="title">Planning</span>
             <div className="story-input">
-              <input type="text" />
+              <input type="text" onChange={this.handleInputChange} value={this.props.pokerStore!.title}/>
               <button onClick={this.handleTimerClick}>
                 {this.props.pokerStore!.timer ? this.renderTime() : 'Start'}
               </button>
