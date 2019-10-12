@@ -1,0 +1,19 @@
+.scrumma-button {
+    background-color: #ff6b95;
+    border: none;
+    outline: none;
+    height: 44px;
+    border-radius: 22px;
+    color: #fff;
+    margin-right: 2px;
+    padding: 0 24px;
+    opacity: 0.9;
+    transition: 0.25s;
+    &.block {
+        width: 100%;
+    }
+    &:hover {
+        opacity: 1;
+        transition: 0.25s;
+    }
+}

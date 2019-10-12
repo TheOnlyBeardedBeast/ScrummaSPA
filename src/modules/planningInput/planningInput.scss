@@ -1,0 +1,48 @@
+.planning-input {
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 15px;
+    display: flex;
+    height: 48px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132),
+        0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+    align-items: center;
+    border: 1px solid #fff;
+    & input {
+        border: none;
+        flex-grow: 1;
+        height: 48px;
+        line-height: 48px;
+        font-size: 16px;
+        padding: 0 15px;
+    }
+
+    &.disabled {
+        background-color: #ebebe3;
+        border: 1px solid #ebebe3;
+    }
+
+    &.disabled &-field {
+        pointer-events: none;
+        background-color: #ebebe3;
+    }
+
+    & button {
+        & > .stop,
+        &:hover > .time {
+            opacity: 0.5;
+            transition: 0.25s;
+        }
+        &:hover > .stop,
+        & > .time {
+            opacity: 1;
+            transition: 0.25s;
+        }
+    }
+    &:hover,
+    &:focus {
+        border: 1px solid #ff6b95;
+    }
+}

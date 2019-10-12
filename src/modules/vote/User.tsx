@@ -3,28 +3,30 @@ import React from 'react';
 import './user.scss';
 
 interface VoteProps {
-  user: IUser;
-  showVote: boolean;
-  timer?: number;
+    user: IUser;
+    showVote: boolean;
+    timer?: number;
 }
 
 export const User: React.FC<VoteProps> = ({ user, showVote, timer }) => {
-  const { userName, vote } = user;
+    const { userName, vote, role } = user;
 
-  return (
-    <div className="user">
-      <div className="user-info">
-        <span>{userName}</span>
-        <span>email@email.sk</span>
-      </div>
-      {timer && (
-        <div>
-          <span>{!!vote || vote === 0 ? 'Voted' : 'Waiting'}</span>
+    return (
+        <div className="user">
+            <div className="user-info">
+                <span>{userName}</span>
+                <span>email@email.sk</span>
+            </div>
+            {timer && (
+                <div>
+                    <span>{!!vote || vote === 0 ? 'Voted' : 'Waiting'}</span>
+                </div>
+            )}
+            {role === 0 && (
+                <div className="user-vote">
+                    <span>{showVote && vote}</span>
+                </div>
+            )}
         </div>
-      )}
-      <div className="user-vote">
-        <span>{showVote && vote}</span>
-      </div>
-    </div>
-  );
+    );
 };
