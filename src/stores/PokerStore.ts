@@ -10,6 +10,7 @@ export class PokerStore extends PokerStoreComputed {
         name: string,
         role: number,
         group: number,
+        onError: Function,
     ) => {
         this.connection = new HubConnectionBuilder()
             .withUrl('http://localhost:5000/pokerhub')
@@ -18,11 +19,11 @@ export class PokerStore extends PokerStoreComputed {
         try {
             await this.connection.start();
         } catch (error) {
-            console.log(error);
+            return onError();
         }
 
         if (!this.isConnected) {
-            console.log('Oops something happened');
+            return onError();
         }
 
         this.connection.send('OnJoin', { userName: name, role, group });
@@ -159,6 +160,10 @@ export class PokerStore extends PokerStoreComputed {
         if (!this.timer) {
             if (!this.title) {
                 return toast.error('Please fill in the input first');
+            }
+
+            if (!this.voters.length) {
+                return toast.error('No voters to start voting');
             }
 
             if (this.isConnected) {

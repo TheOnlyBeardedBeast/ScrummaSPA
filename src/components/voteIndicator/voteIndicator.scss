@@ -1,0 +1,13 @@
+.vote-indicator {
+    background-color: #ff6b95;
+    width: 40px;
+    height: 40px;
+    display: block;
+    text-align: center;
+    border-radius: 4px;
+    & > span {
+        line-height: 40px;
+        color: #fff;
+        font-weight: bold;
+    }
+}

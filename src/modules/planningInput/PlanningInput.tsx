@@ -12,10 +12,12 @@ interface PlanningInputProps {
 
 export const PlanningInput: React.FC<PlanningInputProps> = inject('pokerStore')(
     observer(({ pokerStore }) => {
-        const { title, timer, setTitle, everybodyVoted } = pokerStore!;
+        const { title, timer, setTitle, everybodyVoted, voters } = pokerStore!;
 
         const classNames = `planning-input ${
-            !!timer || (!timer && everybodyVoted) ? ' disabled' : ''
+            !!timer || (!timer && everybodyVoted && voters.length > 0)
+                ? ' disabled'
+                : ''
         }`;
 
         const handleInputChange = (

@@ -1,10 +1,9 @@
-import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import './poker.scss';
-import { User } from '../modules/userList/User';
 import Scrollbar from 'react-scrollbars-custom';
 import { Result } from '../modules/result/Result';
 import { observer, inject } from 'mobx-react';
@@ -14,46 +13,54 @@ import { Evaluation } from '../modules/evaluation/Evaluation';
 import { PlanningInput } from '../modules/planningInput/PlanningInput';
 import { HistoryList } from '../modules/historyList/HistoryList';
 import { UserList } from '../modules/userList/UserList';
+import { Title } from '../components/title/Title';
 
-interface PokerProps extends RouteComponentProps<any> {
+interface PokerProps {
     pokerStore?: PokerStore;
 }
 
-@inject('pokerStore')
-@observer
-class PokerPage extends React.Component<PokerProps, {}> {
-    componentDidMount = async () => {
-        const { location, history, pokerStore } = this.props;
-        const { name = undefined, role = 0, group = undefined } =
-            location.state || {};
+export const Poker: React.FC<PokerProps> = inject('pokerStore')(
+    observer(({ pokerStore }) => {
+        const { location, push } = useHistory();
 
-        if (!name || !group) {
-            history.push('/');
-            return;
-        }
+        const onConnectionError = () => {
+            return push('/');
+        };
 
-        if (pokerStore) {
-            pokerStore.initializeConnection(name, role, group);
-        } else {
-            history.push('/');
-            return;
-        }
-    };
+        useEffect(() => {
+            const { name = undefined, role = 0, group = undefined } =
+                location.state || {};
 
-    render() {
+            if (!name || !group) {
+                return push('/');
+            }
+
+            if (pokerStore) {
+                pokerStore.initializeConnection(
+                    name,
+                    role,
+                    group,
+                    onConnectionError,
+                );
+            } else {
+                push('/');
+                return;
+            }
+        }, []);
+
         return (
             <>
                 <ToastContainer position={toast.POSITION.TOP_CENTER} />
                 <div className="scrumma-group">
                     <div className="history">
                         <Scrollbar removeTracksWhenNotUsed>
-                            <span className="title light">History</span>
+                            <Title light>History</Title>
                             <HistoryList />
                         </Scrollbar>
                     </div>
                     <div className="users">
                         <Scrollbar removeTracksWhenNotUsed>
-                            <span className="title">Planning</span>
+                            <Title>Planning</Title>
                             <PlanningInput />
                             <UserList role="voters" />
                             <UserList role="observers" />
@@ -69,7 +76,5 @@ class PokerPage extends React.Component<PokerProps, {}> {
                 </div>
             </>
         );
-    }
-}
-
-export const Poker = withRouter(PokerPage);
+    }),
+);

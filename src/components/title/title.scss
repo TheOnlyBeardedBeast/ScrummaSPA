@@ -1,0 +1,9 @@
+.title {
+    font-size: 24px;
+    color: #3e3e3e;
+    margin-bottom: 24px;
+    display: block;
+    &.light {
+        color: #fff;
+    }
+}

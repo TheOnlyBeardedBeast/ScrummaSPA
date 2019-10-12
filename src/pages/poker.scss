@@ -24,31 +24,3 @@
 .users {
     background-color: #fafafa;
 }
-
-.vote-options {
-    padding: 20px !important;
-}
-
-.title {
-    font-size: 24px;
-    color: #3e3e3e;
-    margin-bottom: 24px;
-    display: block;
-    &.light {
-        color: #fff;
-    }
-}
-
-.unique-votes {
-    display: flex;
-    flex-wrap: wrap;
-    & > div {
-        margin: 0 5px;
-        &:first-of-type {
-            margin-left: 0;
-        }
-        &:last-of-type {
-            margin-right: 0;
-        }
-    }
-}
