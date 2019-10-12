@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { PokerStore } from '../../stores/PokerStore';
-import { VoteIndicator } from '../vote/VoteIndicator';
+import { VoteIndicator } from '../../components/voteIndicator/VoteIndicator';
 import './evaluation.scss';
 import { Button } from '../../components/button/Button';
 

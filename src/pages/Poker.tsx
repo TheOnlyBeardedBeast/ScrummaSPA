@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import './poker.scss';
-import { User } from '../modules/vote/User';
+import { User } from '../modules/userList/User';
 import Scrollbar from 'react-scrollbars-custom';
 import { Result } from '../modules/result/Result';
 import { observer, inject } from 'mobx-react';
@@ -13,6 +13,7 @@ import { Options } from '../modules/options/Options';
 import { Evaluation } from '../modules/evaluation/Evaluation';
 import { PlanningInput } from '../modules/planningInput/PlanningInput';
 import { HistoryList } from '../modules/historyList/HistoryList';
+import { UserList } from '../modules/userList/UserList';
 
 interface PokerProps extends RouteComponentProps<any> {
     pokerStore?: PokerStore;
@@ -39,24 +40,6 @@ class PokerPage extends React.Component<PokerProps, {}> {
         }
     };
 
-    renderSelf = () => {
-        const { self, timer } = this.props.pokerStore!;
-
-        if (self) {
-            return <User user={self} showVote={true} timer={timer} />;
-        }
-
-        return null;
-    };
-
-    renderUsers = () => {
-        const { users, timer } = this.props.pokerStore!;
-
-        return users.map((user, index) => (
-            <User key={index} user={user} showVote={!timer} timer={timer} />
-        ));
-    };
-
     render() {
         return (
             <>
@@ -72,9 +55,8 @@ class PokerPage extends React.Component<PokerProps, {}> {
                         <Scrollbar removeTracksWhenNotUsed>
                             <span className="title">Planning</span>
                             <PlanningInput />
-                            <span className="title">Voters</span>
-                            {this.renderSelf()}
-                            {this.renderUsers()}
+                            <UserList role="voters" />
+                            <UserList role="observers" />
                         </Scrollbar>
                     </div>
                     <div className="vote-options">

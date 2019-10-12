@@ -29,6 +29,16 @@ export class PokerStoreComputed extends PokerStoreBase {
         return voters;
     }
 
+    @computed public get observers(): Array<IUser> {
+        const observers = this.users.filter(user => user.role === 1);
+
+        if (this.self && this.self.role === 1) {
+            return [this.self, ...observers];
+        }
+
+        return observers;
+    }
+
     @computed public get everybodyVoted(): boolean {
         return this.voters.every(({ vote }) => !!vote || vote === 0);
     }
