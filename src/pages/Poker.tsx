@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import './poker.scss';
@@ -49,32 +48,29 @@ export const Poker: React.FC<PokerProps> = inject('pokerStore')(
         }, []);
 
         return (
-            <>
-                <ToastContainer position={toast.POSITION.TOP_CENTER} />
-                <div className="scrumma-group">
-                    <div className="history">
-                        <Scrollbar removeTracksWhenNotUsed>
-                            <Title light>History</Title>
-                            <HistoryList />
-                        </Scrollbar>
-                    </div>
-                    <div className="users">
-                        <Scrollbar removeTracksWhenNotUsed>
-                            <Title>Planning</Title>
-                            <PlanningInput />
-                            <UserList role="voters" />
-                            <UserList role="observers" />
-                        </Scrollbar>
-                    </div>
-                    <div className="vote-options">
-                        <Scrollbar removeTracksWhenNotUsed>
-                            <Options />
-                            <Result />
-                            <Evaluation />
-                        </Scrollbar>
-                    </div>
+            <div className="scrumma-group">
+                <div className="history">
+                    <Scrollbar removeTracksWhenNotUsed>
+                        <Title light>History</Title>
+                        <HistoryList />
+                    </Scrollbar>
                 </div>
-            </>
+                <div className="users">
+                    <Scrollbar removeTracksWhenNotUsed>
+                        <Title>Planning</Title>
+                        <PlanningInput />
+                        <UserList role="voters" />
+                        <UserList role="observers" />
+                    </Scrollbar>
+                </div>
+                <div className="vote-options">
+                    <Scrollbar removeTracksWhenNotUsed>
+                        <Options />
+                        <Result />
+                        <Evaluation />
+                    </Scrollbar>
+                </div>
+            </div>
         );
     }),
 );

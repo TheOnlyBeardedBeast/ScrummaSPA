@@ -23,7 +23,7 @@ export const User: React.FC<VoteProps> = ({ user, showVote, timer }) => {
         <div className="user">
             <div className="user-info">
                 <span>{userName}</span>
-                <span>email@email.sk</span>
+                {/* <span>email@email.sk</span> */}
             </div>
             {renderVoteStatus()}
             {role === 0 && <VoteIndicator vote={vote} showVote={showVote} />}

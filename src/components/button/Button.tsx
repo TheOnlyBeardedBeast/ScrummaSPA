@@ -4,13 +4,15 @@ import './button.scss';
 
 interface ButtonProps {
     block?: boolean;
-    onClick: Function;
+    onClick?: Function;
+    type?: 'button' | 'reset' | 'submit';
 }
 
 export const Button: React.FC<ButtonProps> = ({
     block = false,
     onClick,
     children,
+    type = 'button',
 }) => {
     const className = `scrumma-button${block ? ' block' : ''}`;
 

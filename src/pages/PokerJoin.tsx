@@ -1,14 +1,22 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
 import './join.scss';
+import { Button } from '../components/button/Button';
+import { Field } from '../components/field/Field';
+import { Switch } from '../components/switch/Switch';
+import { useHistory, useParams } from 'react-router';
+import { toast } from 'react-toastify';
 
 interface PokerJoinProps extends RouteComponentProps<any> {}
 
-export const PokerJoinPage: React.FC<PokerJoinProps> = ({ history }) => {
+export const PokerJoin: React.FC<PokerJoinProps> = () => {
+    const { push } = useHistory();
+    const { groupId } = useParams();
+
     const [name, setName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [group, setGroup] = useState<number>(0);
+    const [group, setGroup] = useState<string>((groupId as string) || '');
     const [isObserver, setIsObserver] = useState<boolean>(false);
 
     const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +34,7 @@ export const PokerJoinPage: React.FC<PokerJoinProps> = ({ history }) => {
     const handleGroupChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { target } = event;
 
-        setGroup(parseInt(target.value));
+        setGroup(target.value);
     };
 
     const handleIsObserverChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -38,10 +46,24 @@ export const PokerJoinPage: React.FC<PokerJoinProps> = ({ history }) => {
     const handleJoin = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
+        let errors: Array<string> = [];
+
+        if (!name || !password) {
+            errors.push('Name and password are required fields.');
+        }
+
+        if (isNaN(parseInt(group))) {
+            errors.push('Group Id should be number.');
+        }
+
+        if (errors.length) {
+            return errors.forEach(error => toast.error(error));
+        }
+
         const response = await fetch('http://localhost:5000/VerifyGroup', {
             method: 'POST',
             body: JSON.stringify({
-                id: group,
+                id: parseInt(group),
                 password,
             }),
             headers: {
@@ -49,36 +71,41 @@ export const PokerJoinPage: React.FC<PokerJoinProps> = ({ history }) => {
             },
         });
 
-        if (response.status == 200) {
-            history.push('/poker', { name, role: isObserver ? 1 : 0, group });
+        if (response.status === 200) {
+            push('/poker', { name, role: isObserver ? 1 : 0, group });
+        } else {
+            toast.error('Bad credentials.');
         }
     };
 
     return (
         <div className="join">
             <form onSubmit={handleJoin}>
-                <label>Name</label>
-                <input type="text" onChange={handleNameChange} value={name} />
-                <label>Password</label>
-                <input
+                <Field
+                    label="Name"
                     type="text"
+                    onChange={handleNameChange}
+                    value={name}
+                />
+                <Field
+                    label="Password"
+                    type="password"
                     onChange={handlePasswordChange}
                     value={password}
                 />
-                <label>Group id</label>
-                <input type="text" onChange={handleGroupChange} value={group} />
-                <label>
-                    <span>Observer</span>
-                    <input
-                        type="checkbox"
-                        checked={isObserver}
-                        onChange={handleIsObserverChange}
-                    />
-                </label>
-                <button type="submit">Join</button>
+                <Field
+                    label="Group id"
+                    type="text"
+                    onChange={handleGroupChange}
+                    value={group}
+                />
+                <Switch
+                    label="Observer"
+                    onChange={handleIsObserverChange}
+                    checked={isObserver}
+                />
+                <Button type="submit">Join</Button>
             </form>
         </div>
     );
 };
-
-export const PokerJoin = withRouter(PokerJoinPage);
