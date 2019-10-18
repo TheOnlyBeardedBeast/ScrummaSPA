@@ -8,6 +8,7 @@ interface FieldProps {
     block?: boolean;
     value: string | number;
     label: string;
+    tabIndex?: number;
 }
 
 export const Field: React.FC<FieldProps> = ({
@@ -16,6 +17,7 @@ export const Field: React.FC<FieldProps> = ({
     onChange,
     value,
     label,
+    tabIndex,
 }) => {
     const inputClassName = `scrumma-field${block ? ' block' : ''}`;
 
@@ -27,6 +29,7 @@ export const Field: React.FC<FieldProps> = ({
         <>
             <label className="scrumma-label">{label}</label>
             <input
+                tabIndex={tabIndex}
                 type={type}
                 className={inputClassName}
                 onChange={handleOnChange}

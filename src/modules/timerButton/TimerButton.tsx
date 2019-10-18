@@ -22,7 +22,7 @@ export const TimerButton: React.FC<TimerButtonProps> = inject('pokerStore')(
         };
 
         return (
-            <Button onClick={toggleTimer}>
+            <Button onClick={toggleTimer} tabIndex={2}>
                 {timer ? renderTime() : 'Start'}
             </Button>
         );

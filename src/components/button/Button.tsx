@@ -6,6 +6,7 @@ interface ButtonProps {
     block?: boolean;
     onClick?: Function;
     type?: 'button' | 'reset' | 'submit';
+    tabIndex?: number;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -13,6 +14,7 @@ export const Button: React.FC<ButtonProps> = ({
     onClick,
     children,
     type = 'button',
+    tabIndex,
 }) => {
     const className = `scrumma-button${block ? ' block' : ''}`;
 
@@ -21,7 +23,11 @@ export const Button: React.FC<ButtonProps> = ({
     };
 
     return (
-        <button className={className} onClick={handleOnClick}>
+        <button
+            className={className}
+            onClick={handleOnClick}
+            tabIndex={tabIndex}
+        >
             {children}
         </button>
     );

@@ -32,7 +32,12 @@ export const Options: React.FC<OptionsProps> = inject('pokerStore')(
             }
 
             return numbers.map((num, index) => (
-                <VoteButton key={index} num={num} onClick={vote} />
+                <VoteButton
+                    key={index}
+                    num={num}
+                    onClick={vote}
+                    tabIndex={index + 1}
+                />
             ));
         };
 

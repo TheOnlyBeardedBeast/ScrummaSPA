@@ -31,6 +31,7 @@ export const Evaluation: React.FC<Evaluationprops> = inject('pokerStore')(
                     vote={vote}
                     showVote={true}
                     onClick={handleEvaulationClick}
+                    tabIndex={index + 2}
                 />
             ));
 

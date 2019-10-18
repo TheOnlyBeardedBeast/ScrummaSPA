@@ -6,12 +6,14 @@ interface VoteIndicatorProps {
     showVote: boolean;
     vote?: number;
     onClick?: Function;
+    tabIndex?: number;
 }
 
 export const VoteIndicator: React.FC<VoteIndicatorProps> = ({
     showVote,
     vote,
     onClick,
+    tabIndex,
 }) => {
     const handleClick = () => {
         if (onClick) {
@@ -19,9 +21,15 @@ export const VoteIndicator: React.FC<VoteIndicatorProps> = ({
         }
     };
 
+    const voteValue = vote === 1000 ? '?' : vote;
+
     return (
-        <div className="vote-indicator" onClick={handleClick}>
-            <span>{showVote && vote}</span>
+        <div
+            className="vote-indicator"
+            onClick={handleClick}
+            tabIndex={tabIndex}
+        >
+            <span>{showVote && voteValue}</span>
         </div>
     );
 };

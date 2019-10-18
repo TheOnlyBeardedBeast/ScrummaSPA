@@ -33,6 +33,7 @@ export const PlanningInput: React.FC<PlanningInputProps> = inject('pokerStore')(
                     type="text"
                     onChange={handleInputChange}
                     value={title}
+                    tabIndex={0}
                 />
                 <TimerButton />
             </div>

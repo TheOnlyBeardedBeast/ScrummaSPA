@@ -119,15 +119,19 @@ export class PokerStore extends PokerStoreComputed {
                     'OnSyncHistoryResponse',
                     connectionId,
                     this.history,
+                    this.title,
                 );
             }
         });
 
         this.connection.on(
             'syncHistoryResponse',
-            (history: Array<IHistoryItem>) => {
+            (history: Array<IHistoryItem>, title: string) => {
                 if (history.length > 0) {
                     this.history = history;
+                }
+                if (title) {
+                    this.title = title;
                 }
             },
         );
