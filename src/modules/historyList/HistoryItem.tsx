@@ -1,5 +1,6 @@
 import React from 'react';
-import { VoteIndicator } from '../../components/voteIndicator/VoteIndicator';
+
+import { VoteIndicator } from 'components';
 
 interface HistoryItemProps extends IHistoryItem {}
 

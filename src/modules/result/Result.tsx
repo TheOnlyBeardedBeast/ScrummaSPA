@@ -1,9 +1,10 @@
 import React from 'react';
 import gradstop from 'gradstop';
 import { Doughnut } from 'react-chartjs-2';
-import './result.scss';
 import { observer, inject } from 'mobx-react';
-import { PokerStore } from '../../stores/PokerStore';
+
+import { PokerStore } from 'stores/PokerStore';
+import './result.scss';
 
 interface ResultProps {
     pokerStore?: PokerStore;

@@ -1,0 +1,28 @@
+.hash-switch {
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 3;
+    background-color: #fff;
+
+    @media (min-width: 680px) {
+        display: none;
+    }
+
+    & > .hash-switch-button {
+        flex: 1 1 0;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        text-transform: capitalize;
+        border-top: 2px solid transparent;
+
+        &.active {
+            border-top: 2px solid #ff6b95;
+        }
+    }
+}

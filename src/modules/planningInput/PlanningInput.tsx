@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 
-import { PokerStore } from '../../stores/PokerStore';
-import { TimerButton } from '../timerButton/TimerButton';
+import { PokerStore } from 'stores/PokerStore';
 
+import { TimerButton } from 'modules';
 import './planningInput.scss';
 
 interface PlanningInputProps {

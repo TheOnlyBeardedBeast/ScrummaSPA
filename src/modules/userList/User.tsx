@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { VoteIndicator } from 'components';
 import './user.scss';
-import { VoteIndicator } from '../../components/voteIndicator/VoteIndicator';
 
 interface VoteProps {
     user: IUser;

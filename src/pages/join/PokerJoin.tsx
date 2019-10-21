@@ -1,12 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-
-import './join.scss';
-import { Button } from '../components/button/Button';
-import { Field } from '../components/field/Field';
-import { Switch } from '../components/switch/Switch';
 import { useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
+
+import { Button, Field, Switch } from 'components';
+import './join.scss';
 
 interface PokerJoinProps extends RouteComponentProps<any> {}
 

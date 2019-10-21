@@ -1,8 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { PokerStore } from '../../stores/PokerStore';
+
+import { PokerStore } from 'stores/PokerStore';
+import { capitalize } from 'utils/helpers';
 import { User } from './User';
-import { capitalize } from '../../utils/helpers';
 
 interface UserListProps {
     role: 'voters' | 'observers';

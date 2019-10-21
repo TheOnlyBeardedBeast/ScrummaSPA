@@ -1,13 +1,14 @@
 import React from 'react';
-import './App.scss';
+import { Provider } from 'mobx-react';
 import { createBrowserHistory } from 'history';
 import { Router, Route, Switch } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-import { PokerJoin } from './pages/PokerJoin';
-import { Poker } from './pages/Poker';
-import { Provider } from 'mobx-react';
 import { PokerStore } from './stores/PokerStore';
+
+import { PokerJoin, Poker } from 'pages';
+
+import './App.scss';
 
 const history = createBrowserHistory();
 

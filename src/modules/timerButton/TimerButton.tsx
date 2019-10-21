@@ -1,8 +1,9 @@
 import React from 'react';
-import { PokerStore } from '../../stores/PokerStore';
-import { fmtMSS } from '../../utils/helpers';
 import { inject, observer } from 'mobx-react';
-import { Button } from '../../components/button/Button';
+
+import { PokerStore } from 'stores/PokerStore';
+import { fmtMSS } from 'utils/helpers';
+import { Button } from 'components';
 
 interface TimerButtonProps {
     pokerStore?: PokerStore;
@@ -22,7 +23,7 @@ export const TimerButton: React.FC<TimerButtonProps> = inject('pokerStore')(
         };
 
         return (
-            <Button onClick={toggleTimer} tabIndex={2}>
+            <Button onClick={toggleTimer} tabIndex={100}>
                 {timer ? renderTime() : 'Start'}
             </Button>
         );

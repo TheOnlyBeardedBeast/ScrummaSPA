@@ -1,7 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { PokerStore } from '../../stores/PokerStore';
-import { VoteButton } from '../voteButton/VoteButton';
+
+import { PokerStore } from 'stores/PokerStore';
+
+import { VoteButton } from 'modules';
 import './options.scss';
 
 interface OptionsProps {
@@ -36,7 +38,7 @@ export const Options: React.FC<OptionsProps> = inject('pokerStore')(
                     key={index}
                     num={num}
                     onClick={vote}
-                    tabIndex={index + 1}
+                    tabIndex={index + 200}
                 />
             ));
         };

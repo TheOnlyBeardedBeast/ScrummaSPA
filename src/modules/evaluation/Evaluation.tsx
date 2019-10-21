@@ -1,9 +1,10 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { PokerStore } from '../../stores/PokerStore';
-import { VoteIndicator } from '../../components/voteIndicator/VoteIndicator';
+
+import { PokerStore } from 'stores/PokerStore';
+
+import { Button, VoteIndicator } from 'components';
 import './evaluation.scss';
-import { Button } from '../../components/button/Button';
 
 interface Evaluationprops {
     pokerStore?: PokerStore;
@@ -31,7 +32,7 @@ export const Evaluation: React.FC<Evaluationprops> = inject('pokerStore')(
                     vote={vote}
                     showVote={true}
                     onClick={handleEvaulationClick}
-                    tabIndex={index + 2}
+                    tabIndex={index + 300}
                 />
             ));
 

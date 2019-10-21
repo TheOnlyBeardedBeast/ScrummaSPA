@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 
-import { PokerStore } from '../../stores/PokerStore';
-import { HistoryItem } from './HistoryItem';
+import { PokerStore } from 'stores/PokerStore';
 
+import { HistoryItem } from './HistoryItem';
 import './historyList.scss';
 
 interface HistoryListProps {

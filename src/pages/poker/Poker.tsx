@@ -1,26 +1,35 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
-import 'react-toastify/dist/ReactToastify.css';
-
-import './poker.scss';
-import Scrollbar from 'react-scrollbars-custom';
-import { Result } from '../modules/result/Result';
 import { observer, inject } from 'mobx-react';
-import { PokerStore } from '../stores/PokerStore';
-import { Options } from '../modules/options/Options';
-import { Evaluation } from '../modules/evaluation/Evaluation';
-import { PlanningInput } from '../modules/planningInput/PlanningInput';
-import { HistoryList } from '../modules/historyList/HistoryList';
-import { UserList } from '../modules/userList/UserList';
-import { Title } from '../components/title/Title';
+import Scrollbar from 'react-scrollbars-custom';
+
+import { PokerStore } from 'stores/PokerStore';
+
+import {
+    Result,
+    UserList,
+    Options,
+    Evaluation,
+    PlanningInput,
+    HistoryList,
+    HashSwitch,
+} from 'modules';
+import { useHash } from 'hooks';
+import { Title, Tab } from 'components';
+
+import 'react-toastify/dist/ReactToastify.css';
+import './poker.scss';
 
 interface PokerProps {
     pokerStore?: PokerStore;
 }
 
+const hashOptions = ['#planning', '#history', '#pointing'];
+
 export const Poker: React.FC<PokerProps> = inject('pokerStore')(
     observer(({ pokerStore }) => {
         const { location, push } = useHistory();
+        const hash = useHash(hashOptions, '#planning');
 
         const onConnectionError = () => {
             return push('/');
@@ -49,27 +58,40 @@ export const Poker: React.FC<PokerProps> = inject('pokerStore')(
 
         return (
             <div className="scrumma-group">
-                <div className="history">
+                <HashSwitch hashOptions={hashOptions} currentHash={hash} />
+                <Tab
+                    className="history section"
+                    hash="#history"
+                    currentHash={hash}
+                >
                     <Scrollbar removeTracksWhenNotUsed>
                         <Title light>History</Title>
                         <HistoryList />
                     </Scrollbar>
-                </div>
-                <div className="users">
+                </Tab>
+                <Tab
+                    className="users section"
+                    hash="#planning"
+                    currentHash={hash}
+                >
                     <Scrollbar removeTracksWhenNotUsed>
                         <Title>Planning</Title>
                         <PlanningInput />
                         <UserList role="voters" />
                         <UserList role="observers" />
                     </Scrollbar>
-                </div>
-                <div className="vote-options">
+                </Tab>
+                <Tab
+                    className="vote-options section"
+                    hash="#pointing"
+                    currentHash={hash}
+                >
                     <Scrollbar removeTracksWhenNotUsed>
                         <Options />
                         <Result />
                         <Evaluation />
                     </Scrollbar>
-                </div>
+                </Tab>
             </div>
         );
     }),
