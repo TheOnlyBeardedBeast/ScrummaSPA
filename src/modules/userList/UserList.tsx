@@ -1,17 +1,18 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
+import { observer, useObserver } from 'mobx-react';
 
-import { PokerStore } from 'stores/PokerStore';
 import { capitalize } from 'utils/helpers';
 import { User } from './User';
+import { useStores } from 'hooks/useStores';
 
 interface UserListProps {
     role: 'voters' | 'observers';
-    pokerStore?: PokerStore;
 }
 
-export const UserList: React.FC<UserListProps> = inject('pokerStore')(
-    observer(({ pokerStore, role }) => {
+export const UserList: React.FC<UserListProps> = ({ role }) => {
+    const { pokerStore } = useStores();
+
+    return useObserver(() => {
         const { observers, voters, timer, self } = pokerStore!;
 
         const mapping = {
@@ -40,5 +41,5 @@ export const UserList: React.FC<UserListProps> = inject('pokerStore')(
                 {renderContent()}
             </>
         );
-    }),
-);
+    });
+};

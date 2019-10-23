@@ -1,17 +1,14 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-
-import { PokerStore } from 'stores/PokerStore';
+import { useObserver } from 'mobx-react';
 
 import { TimerButton } from 'modules';
 import './planningInput.scss';
+import { useStores } from 'hooks/useStores';
 
-interface PlanningInputProps {
-    pokerStore?: PokerStore;
-}
+export const PlanningInput: React.FC = () => {
+    const { pokerStore } = useStores();
 
-export const PlanningInput: React.FC<PlanningInputProps> = inject('pokerStore')(
-    observer(({ pokerStore }) => {
+    return useObserver(() => {
         const { title, timer, setTitle, everybodyVoted, voters } = pokerStore!;
 
         const classNames = `planning-input ${
@@ -38,5 +35,5 @@ export const PlanningInput: React.FC<PlanningInputProps> = inject('pokerStore')(
                 <TimerButton />
             </div>
         );
-    }),
-);
+    });
+};

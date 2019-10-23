@@ -1,25 +1,22 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-
-import { PokerStore } from 'stores/PokerStore';
+import { useObserver } from 'mobx-react';
 
 import { HistoryItem } from './HistoryItem';
 import './historyList.scss';
+import { useStores } from 'hooks/useStores';
 
-interface HistoryListProps {
-    pokerStore?: PokerStore;
-}
+export const HistoryList: React.FC = () => {
+    const { pokerStore } = useStores();
 
-export const HistoryList: React.FC<HistoryListProps> = inject('pokerStore')(
-    observer(({ pokerStore }) => {
-        const { history } = pokerStore!;
-
+    return useObserver(() => {
         const renderItems = () => {
+            const { history } = pokerStore!;
+
             return history.map(({ title, vote }, index) => (
                 <HistoryItem title={title} vote={vote} key={index} />
             ));
         };
 
         return <ul className="history-list">{renderItems()}</ul>;
-    }),
-);
+    });
+};

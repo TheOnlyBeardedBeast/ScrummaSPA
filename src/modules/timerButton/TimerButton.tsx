@@ -1,16 +1,14 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
+import { useObserver } from 'mobx-react';
 
-import { PokerStore } from 'stores/PokerStore';
 import { fmtMSS } from 'utils/helpers';
 import { Button } from 'components';
+import { useStores } from 'hooks/useStores';
 
-interface TimerButtonProps {
-    pokerStore?: PokerStore;
-}
+export const TimerButton: React.FC = () => {
+    const { pokerStore } = useStores();
 
-export const TimerButton: React.FC<TimerButtonProps> = inject('pokerStore')(
-    observer(({ pokerStore }) => {
+    return useObserver(() => {
         const { seconds, timer, toggleTimer } = pokerStore!;
 
         const renderTime = () => {
@@ -27,5 +25,5 @@ export const TimerButton: React.FC<TimerButtonProps> = inject('pokerStore')(
                 {timer ? renderTime() : 'Start'}
             </Button>
         );
-    }),
-);
+    });
+};

@@ -14,8 +14,12 @@ export const HashSwitch: React.FC<HashSwitchProps> = ({
     currentHash,
 }) => {
     const renderHashItems = () =>
-        hashOptions.map(hash => (
-            <HashSwitchButton hashOption={hash} currentHash={currentHash} />
+        hashOptions.map((hash, index) => (
+            <HashSwitchButton
+                key={index}
+                hashOption={hash}
+                currentHash={currentHash}
+            />
         ));
 
     return <div className="hash-switch">{renderHashItems()}</div>;

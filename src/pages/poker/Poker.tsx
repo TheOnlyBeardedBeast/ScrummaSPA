@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { observer, inject } from 'mobx-react';
+import { useObserver } from 'mobx-react';
 import Scrollbar from 'react-scrollbars-custom';
-
-import { PokerStore } from 'stores/PokerStore';
 
 import {
     Result,
@@ -19,43 +17,42 @@ import { Title, Tab } from 'components';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './poker.scss';
-
-interface PokerProps {
-    pokerStore?: PokerStore;
-}
+import { useStores } from 'hooks/useStores';
 
 const hashOptions = ['#planning', '#history', '#pointing'];
 
-export const Poker: React.FC<PokerProps> = inject('pokerStore')(
-    observer(({ pokerStore }) => {
-        const { location, push } = useHistory();
-        const hash = useHash(hashOptions, '#planning');
+export const Poker: React.FC = () => {
+    const { pokerStore } = useStores();
 
-        const onConnectionError = () => {
+    const { location, push } = useHistory();
+    const hash = useHash(hashOptions, '#planning');
+
+    const onConnectionError = () => {
+        return push('/');
+    };
+
+    useEffect(() => {
+        const { name = undefined, role = 0, group = undefined } =
+            location.state || {};
+
+        if (!name || !group) {
             return push('/');
-        };
+        }
 
-        useEffect(() => {
-            const { name = undefined, role = 0, group = undefined } =
-                location.state || {};
+        if (pokerStore) {
+            pokerStore.initializeConnection(
+                name,
+                role,
+                group,
+                onConnectionError,
+            );
+        } else {
+            push('/');
+            return;
+        }
+    }, []);
 
-            if (!name || !group) {
-                return push('/');
-            }
-
-            if (pokerStore) {
-                pokerStore.initializeConnection(
-                    name,
-                    role,
-                    group,
-                    onConnectionError,
-                );
-            } else {
-                push('/');
-                return;
-            }
-        }, []);
-
+    return useObserver(() => {
         return (
             <div className="scrumma-group">
                 <HashSwitch hashOptions={hashOptions} currentHash={hash} />
@@ -94,5 +91,5 @@ export const Poker: React.FC<PokerProps> = inject('pokerStore')(
                 </Tab>
             </div>
         );
-    }),
-);
+    });
+};

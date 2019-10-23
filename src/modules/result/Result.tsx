@@ -1,19 +1,17 @@
 import React from 'react';
 import gradstop from 'gradstop';
 import { Doughnut } from 'react-chartjs-2';
-import { observer, inject } from 'mobx-react';
+import { useObserver } from 'mobx-react';
 
-import { PokerStore } from 'stores/PokerStore';
 import './result.scss';
-
-interface ResultProps {
-    pokerStore?: PokerStore;
-}
+import { useStores } from 'hooks/useStores';
 
 const baseColorArray: string[] = ['#ff6b95', '#ffc796'];
 
-export const Result: React.FC<ResultProps> = inject('pokerStore')(
-    observer(({ pokerStore }) => {
+export const Result: React.FC = () => {
+    const { pokerStore } = useStores();
+
+    return useObserver(() => {
         const { users, self, timer } = pokerStore!;
         const selfVoted = self && (!!self.vote || self.vote === 0);
         const usersVoted =
@@ -68,5 +66,5 @@ export const Result: React.FC<ResultProps> = inject('pokerStore')(
                 <Doughnut data={data} />
             </div>
         );
-    }),
-);
+    });
+};

@@ -1,25 +1,18 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-
-import { PokerStore } from 'stores/PokerStore';
+import { useObserver } from 'mobx-react';
 
 import { Button, VoteIndicator } from 'components';
 import './evaluation.scss';
+import { useStores } from 'hooks/useStores';
 
-interface Evaluationprops {
-    pokerStore?: PokerStore;
-}
+export const Evaluation: React.FC = () => {
+    const { pokerStore } = useStores();
 
-export const Evaluation: React.FC<Evaluationprops> = inject('pokerStore')(
-    observer(({ pokerStore }) => {
+    return useObserver(() => {
         const { users, self, timer, title, addToHistory } = pokerStore!;
         const selfVoted = self && (!!self.vote || self.vote === 0);
         const usersVoted =
             users.length && users.every(user => !!user.vote || user.vote === 0);
-
-        if (timer || (!selfVoted && !usersVoted)) {
-            return null;
-        }
 
         const handleEvaulationClick = (vote: number) => {
             addToHistory({ title, vote });
@@ -41,6 +34,10 @@ export const Evaluation: React.FC<Evaluationprops> = inject('pokerStore')(
             pokerStore!.toggleTimer();
         };
 
+        if (timer || (!selfVoted && !usersVoted)) {
+            return null;
+        }
+
         return (
             <div className="evaulations">
                 <span className="title">Choose</span>
@@ -52,5 +49,5 @@ export const Evaluation: React.FC<Evaluationprops> = inject('pokerStore')(
                 </Button>
             </div>
         );
-    }),
-);
+    });
+};
