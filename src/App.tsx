@@ -1,5 +1,4 @@
 import React from 'react';
-import { Provider } from 'mobx-react';
 import { createBrowserHistory } from 'history';
 import { Router, Route, Switch } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';

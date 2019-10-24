@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useHash = (hashoptions: Array<string>, defaultHash: string) => {
     const [hash, setHash] = useState<string>(defaultHash);

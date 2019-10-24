@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useObserver } from 'mobx-react';
+import { useObserver } from 'mobx-react';
 
 import { capitalize } from 'utils/helpers';
 import { User } from './User';

@@ -7,3 +7,5 @@ export * from './timerButton/TimerButton';
 export * from './userList/UserList';
 export * from './voteButton/VoteButton';
 export * from './hashSwitch/HashSwitch';
+export * from './floatingButtonBar/FloatingButtonBar';
+export * from './titleBar/TitleBar';

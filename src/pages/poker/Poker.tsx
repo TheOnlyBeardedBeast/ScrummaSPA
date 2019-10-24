@@ -11,27 +11,28 @@ import {
     PlanningInput,
     HistoryList,
     HashSwitch,
+    FloatingButtonBar,
+    TitleBar,
 } from 'modules';
+import { Title, Tab, Button } from 'components';
 import { useHash } from 'hooks';
-import { Title, Tab } from 'components';
+import { useStores } from 'hooks/useStores';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './poker.scss';
-import { useStores } from 'hooks/useStores';
 
 const hashOptions = ['#planning', '#history', '#pointing'];
 
 export const Poker: React.FC = () => {
     const { pokerStore } = useStores();
-
-    const { location, push } = useHistory();
     const hash = useHash(hashOptions, '#planning');
-
-    const onConnectionError = () => {
-        return push('/');
-    };
+    const { location, push } = useHistory();
 
     useEffect(() => {
+        const onConnectionError = () => {
+            return push('/');
+        };
+
         const { name = undefined, role = 0, group = undefined } =
             location.state || {};
 
@@ -50,39 +51,31 @@ export const Poker: React.FC = () => {
             push('/');
             return;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const handleOnHistoryHideClick = () => (window.location.hash = 'planning');
 
     return useObserver(() => {
         return (
             <div className="scrumma-group">
                 <HashSwitch hashOptions={hashOptions} currentHash={hash} />
-                <div className="poker-floating-buttons">
-                    <button
-                        className="floating-button-history"
-                        onClick={e => console.log('History')}
-                    >
-                        H
-                    </button>
-                    <button
-                        className="floating-button-breake"
-                        onClick={e => console.log('Breake')}
-                    >
-                        B
-                    </button>
-                    <button
-                        className="floating-button-signout"
-                        onClick={e => console.log('SignOut')}
-                    >
-                        S
-                    </button>
-                </div>
+                <FloatingButtonBar />
                 <Tab
                     className="history section"
                     hash="#history"
                     currentHash={hash}
                 >
                     <Scrollbar removeTracksWhenNotUsed>
-                        <Title light>History</Title>
+                        <TitleBar>
+                            <Title light>History</Title>
+                            <Button
+                                className="hide-history-button"
+                                onClick={handleOnHistoryHideClick}
+                            >
+                                Hide
+                            </Button>
+                        </TitleBar>
                         <HistoryList />
                     </Scrollbar>
                 </Tab>
@@ -93,6 +86,7 @@ export const Poker: React.FC = () => {
                 >
                     <Scrollbar removeTracksWhenNotUsed>
                         <Title>Planning</Title>
+
                         <PlanningInput />
                         <UserList role="voters" />
                         <UserList role="observers" />

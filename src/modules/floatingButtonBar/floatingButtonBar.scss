@@ -1,0 +1,55 @@
+.poker-floating-buttons {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 60px;
+    z-index: 3;
+
+    & .floating-button-history {
+        display: none;
+    }
+
+    @media (min-width: 680px) {
+        bottom: 0px;
+        justify-content: flex-end;
+        & .floating-button-history {
+            display: flex;
+        }
+    }
+
+    @media (min-width: 1100px) {
+        & .floating-button-history {
+            display: none;
+        }
+    }
+
+    & button {
+        display: flex;
+        width: 45px;
+        height: 45px;
+        background-color: #ff6b95;
+        border-radius: 50%;
+        overflow: hidden;
+        color: #fff;
+        margin: 0 5px;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        &.active {
+            display: none;
+        }
+
+        & > svg {
+            height: 24px;
+            width: 24px;
+            fill: #fff;
+        }
+    }
+}

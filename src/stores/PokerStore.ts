@@ -13,7 +13,7 @@ export class PokerStore extends PokerStoreComputed {
         onError: Function,
     ) => {
         this.connection = new HubConnectionBuilder()
-            .withUrl('http://localhost:5000/pokerhub')
+            .withUrl('http://mwd.aspifyhost.sk/pokerhub')
             .build();
 
         try {
