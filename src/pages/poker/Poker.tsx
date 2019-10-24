@@ -56,6 +56,26 @@ export const Poker: React.FC = () => {
         return (
             <div className="scrumma-group">
                 <HashSwitch hashOptions={hashOptions} currentHash={hash} />
+                <div className="poker-floating-buttons">
+                    <button
+                        className="floating-button-history"
+                        onClick={e => console.log('History')}
+                    >
+                        H
+                    </button>
+                    <button
+                        className="floating-button-breake"
+                        onClick={e => console.log('Breake')}
+                    >
+                        B
+                    </button>
+                    <button
+                        className="floating-button-signout"
+                        onClick={e => console.log('SignOut')}
+                    >
+                        S
+                    </button>
+                </div>
                 <Tab
                     className="history section"
                     hash="#history"

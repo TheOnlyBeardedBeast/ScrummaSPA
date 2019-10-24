@@ -9,9 +9,13 @@ export const HistoryList: React.FC = () => {
     const { pokerStore } = useStores();
 
     return useObserver(() => {
-        const renderItems = () => {
-            const { history } = pokerStore!;
+        const { history } = pokerStore!;
 
+        if (!history.length) {
+            return <span>No history</span>;
+        }
+
+        const renderItems = () => {
             return history.map(({ title, vote }, index) => (
                 <HistoryItem title={title} vote={vote} key={index} />
             ));

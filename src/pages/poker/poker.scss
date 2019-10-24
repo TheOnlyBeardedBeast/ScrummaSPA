@@ -19,7 +19,7 @@
         min-height: 100%;
         z-index: 0;
         display: none;
-        padding-bottom: 60px;
+        padding-bottom: 120px;
 
         &.visible {
             display: block;
@@ -28,7 +28,7 @@
             position: relative;
             flex-basis: 50%;
             display: block;
-            padding-bottom: 0;
+            padding-bottom: 60;
         }
         @media (min-width: 1100px) {
             flex-basis: 33.3333%;
@@ -36,6 +36,44 @@
         & .ScrollbarsCustom-Content {
             padding: 20px !important;
         }
+    }
+}
+
+.poker-floating-buttons {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 60px;
+    z-index: 3;
+
+    @media (min-width: 680px) {
+        bottom: 0px;
+        justify-content: flex-end;
+    }
+
+    @media (min-width: 1100px) {
+        & .floating-button-history {
+            display: none;
+        }
+    }
+
+    & button {
+        display: block;
+        width: 45px;
+        height: 45px;
+        background-color: #ff6b95;
+        border-radius: 50%;
+        overflow: hidden;
+        color: #fff;
+        margin: 0 5px;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        text-align: center;
+        line-height: 45px;
     }
 }
 
