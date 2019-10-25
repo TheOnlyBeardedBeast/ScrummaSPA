@@ -12,7 +12,7 @@ export const HistoryList: React.FC = () => {
         const { history } = pokerStore!;
 
         if (!history.length) {
-            return <span>No history</span>;
+            return <span className="no-history">No history</span>;
         }
 
         const renderItems = () => {
