@@ -16,7 +16,6 @@ export const FloatingButtonBar: React.FC = () => {
     const handleOnHistoryClick = () => {
         window.location.hash =
             window.location.hash === '#history' ? 'planning' : 'history';
-        console.log(window.location.hash);
     };
 
     const handleOnLogoutClick = () => {
