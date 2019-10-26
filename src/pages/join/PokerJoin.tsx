@@ -58,7 +58,7 @@ export const PokerJoin: React.FC<PokerJoinProps> = () => {
             return errors.forEach(error => toast.error(error));
         }
 
-        const response = await fetch('http://mwd.aspifyhost.sk/VerifyGroup', {
+        const response = await fetch('http://localhost:5000/VerifyGroup', {
             method: 'POST',
             body: JSON.stringify({
                 id: parseInt(group),

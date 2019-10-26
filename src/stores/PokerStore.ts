@@ -13,7 +13,7 @@ export class PokerStore extends PokerStoreComputed {
         onError: Function,
     ) => {
         this.connection = new HubConnectionBuilder()
-            .withUrl('http://mwd.aspifyhost.sk/pokerhub')
+            .withUrl('http://localhost:5000/pokerhub')
             .build();
 
         try {
@@ -27,10 +27,6 @@ export class PokerStore extends PokerStoreComputed {
         }
 
         this.connection.send('OnJoin', { userName: name, role, group });
-
-        this.connection.on('clientConnected', () => {
-            console.log('client is connected');
-        });
 
         this.connection.on('clientJoined', (user: IUser) => {
             this.users.push(user);
@@ -134,6 +130,10 @@ export class PokerStore extends PokerStoreComputed {
                     this.title = title;
                 }
             },
+        );
+
+        this.connection.on('pauseRequest', () =>
+            toast.info('Someone needs a break!'),
         );
     };
 
