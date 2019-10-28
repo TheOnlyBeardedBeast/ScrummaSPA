@@ -1,12 +1,54 @@
-.join {
+.join,
+.create {
     display: flex;
     width: 100%;
     height: 100%;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(-45deg, #ffc796 0%, #ff9db8 100%);
+    & .title {
+        font-size: 48px;
+        color: #fff;
+        margin-bottom: 48px;
+    }
+
+    & label {
+        color: #fff;
+    }
+
     & form {
         display: flex;
         flex-direction: column;
         width: 320px;
+    }
+
+    & .or-option {
+        width: 320px;
+        text-align: center;
+        margin: 24px auto 0;
+        & a {
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            &::after,
+            &::before {
+                content: '';
+                height: 1px;
+                flex-grow: 1;
+                display: flex;
+                background-color: #fff;
+            }
+            &::after {
+                margin-left: 10px;
+            }
+            &::before {
+                margin-right: 10px;
+            }
+        }
     }
 }

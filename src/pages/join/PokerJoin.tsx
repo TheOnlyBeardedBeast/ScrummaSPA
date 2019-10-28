@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
 
-import { Button, Field, Switch } from 'components';
+import { Button, Field, Switch, Title } from 'components';
 import './join.scss';
 
 interface PokerJoinProps extends RouteComponentProps<any> {}
@@ -78,6 +78,7 @@ export const PokerJoin: React.FC<PokerJoinProps> = () => {
 
     return (
         <div className="join">
+            <Title>Join to an existing group</Title>
             <form onSubmit={handleJoin}>
                 <Field
                     label="Name"
@@ -104,6 +105,10 @@ export const PokerJoin: React.FC<PokerJoinProps> = () => {
                 />
                 <Button type="submit">Join</Button>
             </form>
+
+            <div className="or-option">
+                <a>Or create one</a>
+            </div>
         </div>
     );
 };

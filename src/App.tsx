@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import { Router, Route, Switch } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-import { PokerJoin, Poker, Home } from 'pages';
+import { PokerJoin, Poker, Home, Create } from 'pages';
 
 import './App.scss';
 
@@ -14,10 +14,10 @@ const App: React.FC = () => {
         <Router history={history}>
             <>
                 <Switch>
-                    <Route exact path="/home" component={Home} />
-                    <Route exact path="/" component={PokerJoin} />
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/join/:groupId?" component={PokerJoin} />
+                    <Route exact path="/create" component={Create} />
                     <Route exact path="/poker" component={Poker} />
-                    <Route path="/:groupId" component={PokerJoin} />
                 </Switch>
             </>
             <ToastContainer position={toast.POSITION.TOP_CENTER} />
