@@ -1,4 +1,5 @@
-export * from './join/PokerJoin';
+export * from './auth/PokerJoin';
 export * from './poker/Poker';
 export * from './home/Home';
-export * from './create/Create';
+export * from './auth/Create';
+export * from './error/NotFound';

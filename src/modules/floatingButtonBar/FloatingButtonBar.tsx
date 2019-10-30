@@ -23,7 +23,7 @@ export const FloatingButtonBar: React.FC = () => {
             pokerStore.connection!.stop();
         }
 
-        push('/join');
+        push('/');
     };
 
     const handlePauseclick = () => {

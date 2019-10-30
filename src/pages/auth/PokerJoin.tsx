@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import { useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
 
 import { Button, Field, Switch, Title } from 'components';
-import './join.scss';
+import './auth.scss';
 
 interface PokerJoinProps extends RouteComponentProps<any> {}
 
@@ -107,7 +107,7 @@ export const PokerJoin: React.FC<PokerJoinProps> = () => {
             </form>
 
             <div className="or-option">
-                <a>Or create one</a>
+                <Link to="/create">Or create one</Link>
             </div>
         </div>
     );

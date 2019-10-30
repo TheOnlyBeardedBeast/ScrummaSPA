@@ -1,16 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
 import { toast } from 'react-toastify';
 
 import { Button, Field, Title } from 'components';
-import '../join/join.scss';
+import './auth.scss';
 
 interface CreateProps extends RouteComponentProps<any> {}
 
 export const Create: React.FC<CreateProps> = () => {
-    const { push } = useHistory();
-
     const [password, setPassword] = useState<string>('');
     const [groupId, setGroupId] = useState<number | null>(null);
 
@@ -60,7 +57,7 @@ export const Create: React.FC<CreateProps> = () => {
                     </form>
 
                     <div className="or-option">
-                        <a>Or join one</a>
+                        <Link to="/join">Or join existing</Link>
                     </div>
                 </>
             );

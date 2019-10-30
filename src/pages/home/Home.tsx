@@ -20,9 +20,9 @@ export const Home: React.FC = () => (
                     application.
                 </p>
                 <div className="scrumma-auth-button">
-                    <Link to="/join">Create a sesssion</Link>
+                    <Link to="/create">Create a sesssion</Link>
                     <span></span>
-                    <Link to="/create">Join to sesssion</Link>
+                    <Link to="/join">Join to sesssion</Link>
                 </div>
             </div>
             <div className="scrumma-body-section section-background">
